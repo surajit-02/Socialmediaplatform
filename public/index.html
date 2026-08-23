@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus — Modern Social Media Platform</title>
+  <meta name="description" content="Connect, share, follow creators, like posts, and join conversations on Nexus - the modern social media experience.">
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <!-- Background Ambient Glow Orbs -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="header-left">
+        <button id="mobile-menu-btn" class="mobile-menu-btn" title="Open Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <!-- Logo -->
+        <a href="#" class="brand-logo" id="logo-btn">
+          <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+          <span class="logo-text">Nexus<span class="logo-accent">.</span></span>
+        </a>
+      </div>
+
+      <!-- Search Input -->
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="search-input" placeholder="Search posts or creators..." autocomplete="off">
+        <button id="clear-search-btn" class="clear-search hidden" title="Clear search"><i class="fa-solid fa-xmark"></i></button>
+        <div id="search-dropdown" class="search-dropdown hidden"></div>
+      </div>
+
+      <!-- Header Right Controls -->
+      <div class="header-actions">
+        <!-- Theme Toggle Button (Light / Dark) -->
+        <button id="theme-toggle-btn" class="btn-theme-toggle" title="Toggle Light/Dark Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Create Post Action Button -->
+        <button id="header-create-post-btn" class="btn btn-primary btn-pill">
+          <i class="fa-solid fa-plus"></i> <span class="hide-mobile">New Post</span>
+        </button>
+
+        <!-- Auth / User Profile Badge -->
+        <div id="user-header-auth-slot">
+          <!-- Populated dynamically (Login button or Avatar menu) -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Sidebar Overlay Backdrop -->
+  <div id="mobile-sidebar-backdrop" class="mobile-sidebar-backdrop hidden"></div>
+
+  <!-- Main Container -->
+  <main class="main-wrapper">
+    <div class="layout-grid">
+
+      <!-- LEFT SIDEBAR: User Quick Card & Navigation -->
+      <aside class="sidebar sidebar-left" id="sidebar-left">
+        <div class="mobile-sidebar-header">
+          <span class="brand-logo"><div class="logo-icon"><i class="fa-solid fa-bolt"></i></div> <span class="logo-text">Nexus<span class="logo-accent">.</span></span></span>
+          <button id="close-mobile-sidebar-btn" class="modal-close-btn" style="position: static;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- User Quick Card -->
+        <div id="sidebar-user-card" class="glass-card user-mini-card">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="sidebar-nav glass-card">
+          <button class="nav-link active" data-tab="feed" id="nav-feed">
+            <i class="fa-solid fa-house"></i> <span>Home Feed</span>
+          </button>
+          <button class="nav-link" data-tab="trending" id="nav-trending">
+            <i class="fa-solid fa-fire"></i> <span>Trending</span>
+          </button>
+          <button class="nav-link" data-tab="following" id="nav-following">
+            <i class="fa-solid fa-user-group"></i> <span>Following</span>
+          </button>
+          <button class="nav-link" data-tab="explore" id="nav-explore">
+            <i class="fa-solid fa-compass"></i> <span>Explore</span>
+          </button>
+          <button class="nav-link" data-tab="profile" id="nav-my-profile">
+            <i class="fa-solid fa-user"></i> <span>My Profile</span>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- CENTER FEED COLUMN -->
+      <section class="feed-column">
+        <!-- Feed Tabs Header -->
+        <div class="feed-tabs-bar">
+          <div class="feed-title-wrap">
+            <h1 id="feed-title" class="feed-title">Home Feed</h1>
+            <span id="feed-count-badge" class="feed-count-badge">0 posts</span>
+          </div>
+
+          <div class="feed-filter-pills">
+            <button class="filter-pill active" data-filter="all" id="filter-all">All</button>
+            <button class="filter-pill" data-filter="media" id="filter-media">Photos</button>
+          </div>
+        </div>
+
+        <!-- Posts Container -->
+        <div id="posts-container" class="posts-container">
+          <!-- Posts loaded dynamically -->
+          <div class="skeleton-loader">
+            <div class="skeleton skeleton-avatar"></div>
+            <div class="skeleton-lines">
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-text"></div>
+              <div class="skeleton skeleton-rect"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDEBAR: Who to Follow & Trending -->
+      <aside class="sidebar sidebar-right">
+        <!-- Suggested Users Card -->
+        <div class="glass-card sidebar-widget">
+          <div class="widget-header">
+            <h3><i class="fa-solid fa-user-plus accent-text"></i> Who to Follow</h3>
+          </div>
+          <div id="suggested-users-list" class="suggested-users-list">
+            <!-- Dynamic users list -->
+          </div>
+        </div>
+
+        <!-- Trending Topics Card -->
+        <div class="glass-card sidebar-widget">
+          <div class="widget-header">
+            <h3><i class="fa-solid fa-fire accent-text"></i> Trending Topics</h3>
+          </div>
+          <div class="trending-list">
+            <a href="#" class="trending-item" data-search="#Glassmorphism">
+              <span class="trending-tag">#Glassmorphism</span>
+              <span class="trending-count">1.4k posts</span>
+            </a>
+            <a href="#" class="trending-item" data-search="#JavaScript">
+              <span class="trending-tag">#JavaScript</span>
+              <span class="trending-count">3.8k posts</span>
+            </a>
+            <a href="#" class="trending-item" data-search="#ExpressJS">
+              <span class="trending-tag">#ExpressJS</span>
+              <span class="trending-count">920 posts</span>
+            </a>
+            <a href="#" class="trending-item" data-search="#MongoDB">
+              <span class="trending-tag">#MongoDB</span>
+              <span class="trending-count">2.1k posts</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Footer Info -->
+        <footer class="app-footer">
+          <p>© 2026 Nexus Social Platform • Node.js & Express & MongoDB</p>
+        </footer>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- MODAL: Create Post Modal -->
+  <div id="create-post-modal" class="modal-overlay hidden">
+    <div class="modal-card" style="max-width: 560px; width: 92%; padding: 24px;">
+      <div class="modal-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+        <h3 style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin: 0;">
+          <i class="fa-solid fa-pen-to-square accent-text"></i> Create New Post
+        </h3>
+        <button class="modal-close-btn" id="close-create-post-modal-btn" style="position: static;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="composer-user-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <img id="composer-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Your Avatar" class="avatar avatar-md">
+          <div>
+            <div id="composer-user-name" style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary);">User</div>
+            <span style="font-size: 0.76rem; color: var(--text-muted);">Posting to Public Feed</span>
+          </div>
+        </div>
+
+        <div class="composer-input-wrapper" style="margin-bottom: 16px;">
+          <textarea id="post-content-input" placeholder="What's happening in your digital world? Share thoughts, code snippets, or ideas..." rows="4" style="width: 100%; font-family: var(--font-body); padding: 12px 14px; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-md); color: var(--text-primary); resize: vertical; outline: none; font-size: 0.95rem;"></textarea>
+        </div>
+
+        <!-- Hidden Device Media File Picker (Image / Video) -->
+        <input type="file" id="post-media-file" accept="image/*,video/*" class="hidden">
+
+        <!-- Media Preview Container -->
+        <div id="media-preview-container" class="image-input-container hidden" style="margin-bottom: 16px;">
+          <div class="image-preview-wrapper" style="margin-top: 0; position: relative;">
+            <img id="media-preview-img" src="" alt="Image preview" class="hidden" style="max-height: 260px; object-fit: contain; width: 100%; border-radius: var(--radius-md);">
+            <video id="media-preview-video" src="" controls class="hidden" style="max-height: 260px; object-fit: contain; width: 100%; border-radius: var(--radius-md);"></video>
+            <button type="button" id="remove-media-btn" class="remove-img-btn" title="Remove attachment"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+
+        <div class="composer-actions" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px;">
+          <button type="button" id="toggle-image-btn" class="btn-icon" title="Upload Photo or Video">
+            <i class="fa-solid fa-photo-film accent-text"></i>
+            <span class="tool-label">Photo / Video</span>
+          </button>
+          <div style="display: flex; gap: 10px;">
+            <button type="button" id="cancel-create-post-btn" class="btn btn-secondary btn-sm">Cancel</button>
+            <button type="button" id="submit-post-btn" class="btn btn-primary btn-pill">
+              <span>Publish Post</span> <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: User Profile Modal -->
+  <div id="profile-modal" class="modal-overlay hidden">
+    <div class="modal-card profile-modal-card">
+      <button class="modal-close-btn" id="close-profile-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      <div id="profile-modal-content">
+        <!-- Profile detail dynamically loaded -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Edit Profile Modal -->
+  <div id="edit-profile-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Edit Profile</h3>
+        <button class="modal-close-btn" id="close-edit-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="edit-profile-form" class="modal-form">
+        <div class="form-group">
+          <label for="edit-name">Display Name</label>
+          <input type="text" id="edit-name" required placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label for="edit-bio">Bio</label>
+          <textarea id="edit-bio" rows="3" placeholder="Tell the world about yourself..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="edit-avatar-file">Profile Photo (Device File Picker)</label>
+          <div style="display: flex; align-items: center; gap: 14px; background: var(--bg-input); padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <img id="edit-avatar-preview" src="" class="avatar avatar-lg" style="object-fit: cover; width: 56px; height: 56px;">
+            <input type="file" id="edit-avatar-file" accept="image/*" style="font-size: 0.85rem; color: var(--text-secondary);">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="edit-cover-file">Cover Photo (Device File Picker)</label>
+          <input type="file" id="edit-cover-file" accept="image/*" style="font-size: 0.85rem; color: var(--text-secondary); background: var(--bg-input); padding: 10px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="cancel-edit-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Followers / Following List Modal -->
+  <div id="user-list-modal" class="modal-overlay hidden">
+    <div class="modal-card user-list-modal-card">
+      <div class="modal-header">
+        <h3 id="user-list-modal-title">Followers</h3>
+        <button class="modal-close-btn" id="close-user-list-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="user-list-modal-body" class="user-list-body">
+        <!-- List rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Auth Modal (Login / Sign Up) -->
+  <div id="auth-modal" class="modal-overlay hidden">
+    <div class="modal-card auth-modal-card">
+      <button class="modal-close-btn" id="close-auth-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      <div class="auth-tabs">
+        <button id="auth-tab-login" class="auth-tab active">Login</button>
+        <button id="auth-tab-register" class="auth-tab">Create Account</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="modal-form">
+        <div class="form-group">
+          <label for="login-username">Username or Email</label>
+          <input type="text" id="login-username" required placeholder="alex_tech or alex@example.com">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" class="modal-form hidden">
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" required placeholder="Alex Rivera">
+        </div>
+        <div class="form-group">
+          <label for="reg-username">Username</label>
+          <input type="text" id="reg-username" required placeholder="alex_tech">
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" required placeholder="alex@example.com">
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <div class="mobile-bottom-nav">
+    <button class="mobile-nav-item active" data-tab="feed">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="trending">
+      <i class="fa-solid fa-fire"></i>
+      <span>Trending</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="explore">
+      <i class="fa-solid fa-compass"></i>
+      <span>Explore</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="profile">
+      <i class="fa-solid fa-user"></i>
+      <span>Profile</span>
+    </button>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
